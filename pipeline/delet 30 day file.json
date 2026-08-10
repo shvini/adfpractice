@@ -17,7 +17,10 @@
 				"typeProperties": {
 					"dataset": {
 						"referenceName": "source_dataset_30days",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"file_name": "order.csv"
+						}
 					},
 					"fieldList": [
 						"childItems"
@@ -80,6 +83,7 @@
 								],
 								"storeSettings": {
 									"type": "AzureBlobFSReadSettings",
+									"recursive": true,
 									"enablePartitionDiscovery": false
 								},
 								"formatSettings": {
@@ -143,11 +147,6 @@
 				}
 			}
 		],
-		"parameters": {
-			"file_name": {
-				"type": "string"
-			}
-		},
 		"annotations": []
 	}
 }
