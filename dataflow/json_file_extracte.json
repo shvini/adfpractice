@@ -1,0 +1,69 @@
+{
+	"name": "json_file_extracte",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "Json1",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "json_output",
+						"type": "DatasetReference"
+					},
+					"name": "jsonsink"
+				}
+			],
+			"transformations": [
+				{
+					"name": "flatten1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          catalog as (name as string, lastUpdated as string, products as (id as string, name as string, price as double, currency as string, inStock as boolean, category as string, tags as string[], variants as (color as string, sku as string, stock as integer)[])[])",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     documentForm: 'arrayOfDocuments') ~> source1",
+				"source1 foldDown(unroll(catalog.products, catalog.products),",
+				"     mapColumn(",
+				"          id = catalog.products.id,",
+				"          stock = catalog.products.variants.stock,",
+				"          sku = catalog.products.variants.sku,",
+				"          color = catalog.products.variants.color,",
+				"          category = catalog.products.category,",
+				"          inStock = catalog.products.inStock,",
+				"          currency = catalog.products.currency,",
+				"          price = catalog.products.price,",
+				"          name = catalog.products.name",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> flatten1",
+				"flatten1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          EmpName as string,",
+				"          EmpAdd as string,",
+				"          DeptName as string,",
+				"          Gender as string",
+				"     ),",
+				"     partitionFileNames:['product.csv'],",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> jsonsink"
+			]
+		}
+	}
+}
