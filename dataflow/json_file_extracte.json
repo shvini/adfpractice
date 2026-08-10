@@ -18,7 +18,11 @@
 						"referenceName": "json_output",
 						"type": "DatasetReference"
 					},
-					"name": "jsonsink"
+					"name": "jsonsink",
+					"rejectedDataLinkedService": {
+						"referenceName": "data lake",
+						"type": "LinkedServiceReference"
+					}
 				}
 			],
 			"transformations": [
