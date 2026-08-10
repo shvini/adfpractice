@@ -1,0 +1,15 @@
+{
+	"name": "demo-adf-ash",
+	"properties": {
+		"trustModeClaimForMi": {
+			"value": "Disabled",
+			"editable": true
+		}
+	},
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "692878fc-95a4-43a6-966a-e4838c503f0a",
+		"tenantId": "3685ae73-6bd8-4d2e-a13f-dc26f63e6e11"
+	}
+}
