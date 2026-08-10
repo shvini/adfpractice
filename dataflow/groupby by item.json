@@ -1,0 +1,67 @@
+{
+	"name": "groupby by item",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "itemdatsource",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"linkedService": {
+						"referenceName": "data lake",
+						"type": "LinkedServiceReference"
+					},
+					"name": "sinkitemmetadata"
+				}
+			],
+			"transformations": [
+				{
+					"name": "aggregatebyitemname"
+				},
+				{
+					"name": "derivedColumn1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          ItemId as short,",
+				"          VarId as short,",
+				"          ItemName as string,",
+				"          VartName as string,",
+				"          WhNo as string,",
+				"          Zone as string,",
+				"          Bin as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> source1",
+				"source1 aggregate(groupBy(ItemId,",
+				"          ItemName),",
+				"     varname = collect(VartName)) ~> aggregatebyitemname",
+				"aggregatebyitemname derive(varname = replace(replace(replace(replace(toString(varname), '\"', ''), '[', ''), ']', ''),',','|')) ~> derivedColumn1",
+				"derivedColumn1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'delimited',",
+				"     fileSystem: 'testing',",
+				"     columnDelimiter: ',',",
+				"     escapeChar: '\\\\',",
+				"     quoteChar: '\\\"',",
+				"     columnNamesAsHeader: true,",
+				"     partitionFileNames:['iteminfor.csv'],",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> sinkitemmetadata"
+			]
+		}
+	}
+}
