@@ -1,0 +1,33 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "demo-adf-ash"
+		},
+		"AzureSqlDatabase1_password": {
+			"value": ""
+		},
+		"data lake_accountKey": {
+			"value": ""
+		},
+		"AzureSqlDatabase1_properties_typeProperties_server": {
+			"value": "gizmobox-ser-07.database.windows.net"
+		},
+		"AzureSqlDatabase1_properties_typeProperties_database": {
+			"value": "gizmobox-db"
+		},
+		"AzureSqlDatabase1_properties_typeProperties_userName": {
+			"value": "server-admin-07"
+		},
+		"HttpServer_linked_server_properties_typeProperties_url": {
+			"value": "https://raw.githubusercontent.com"
+		},
+		"data lake_properties_typeProperties_url": {
+			"value": "https://demostorage0733.dfs.core.windows.net/"
+		},
+		"manager tigger_properties_typeProperties_scope": {
+			"value": "/subscriptions/2e414b21-b05e-4298-b989-2394c2adde17/resourceGroups/demorg/providers/Microsoft.Storage/storageAccounts/demostorage0733"
+		}
+	}
+}
