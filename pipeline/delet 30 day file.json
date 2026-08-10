@@ -24,6 +24,7 @@
 					],
 					"storeSettings": {
 						"type": "AzureBlobFSReadSettings",
+						"recursive": true,
 						"enablePartitionDiscovery": false
 					},
 					"formatSettings": {
@@ -64,7 +65,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"dataset": {
-									"referenceName": "source_dataset_30days",
+									"referenceName": "Json_1day",
 									"type": "DatasetReference",
 									"parameters": {
 										"file_name": {
@@ -100,7 +101,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"expression": {
-									"value": "@less(activity('Get Metadata2').output.lastModified,\r\nformatDateTime(adddays(utcnow(),-1),'yyyy-MM-ddThh:mm:ssZ'))",
+									"value": "@less(activity('Get Metadata2').output.lastModified,\nformatDateTime(adddays(utcnow(),-1),'yyyy-MM-ddThh:mm:ssZ'))",
 									"type": "Expression"
 								},
 								"ifTrueActivities": [
@@ -118,10 +119,10 @@
 										"userProperties": [],
 										"typeProperties": {
 											"dataset": {
-												"referenceName": "source_dataset_30days",
+												"referenceName": "deletefile",
 												"type": "DatasetReference",
 												"parameters": {
-													"file_name": {
+													"delete_file": {
 														"value": "@activity('Get Metadata2').output.itemName",
 														"type": "Expression"
 													}
