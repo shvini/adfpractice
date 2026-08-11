@@ -1,0 +1,68 @@
+{
+	"name": "ungroupitemgroup",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "itemungorup_dataset",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "sink_ungroup",
+						"type": "DatasetReference"
+					},
+					"name": "sinkoutput"
+				}
+			],
+			"transformations": [
+				{
+					"name": "derivedColumn1"
+				},
+				{
+					"name": "flatten1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          ItemId as string,",
+				"          ItemName as string,",
+				"          varname as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> source1",
+				"source1 derive(varname = split(varname, '|')) ~> derivedColumn1",
+				"derivedColumn1 foldDown(unroll(varname, varname),",
+				"     mapColumn(",
+				"          ItemId,",
+				"          ItemName,",
+				"          varname",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> flatten1",
+				"flatten1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          EmpName as string,",
+				"          EmpAdd as string,",
+				"          DeptName as string,",
+				"          Gender as string",
+				"     ),",
+				"     partitionFileNames:['ungroup_item.csv'],",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> sinkoutput"
+			]
+		}
+	}
+}
