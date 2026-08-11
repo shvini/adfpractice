@@ -59,12 +59,12 @@
 							"userProperties": [],
 							"typeProperties": {
 								"on": {
-									"value": "@item().name",
+									"value": "@replace(item().name,'.csv','')",
 									"type": "Expression"
 								},
 								"cases": [
 									{
-										"value": "file2.csv",
+										"value": "file2",
 										"activities": [
 											{
 												"name": "Copy data1",
@@ -188,11 +188,11 @@
 												"referenceName": "dynamincfolder_file_source",
 												"type": "DatasetReference",
 												"parameters": {
-													"folder_name": {
-														"value": "@activity('Get Metadata1').output",
+													"folder_name": "csvfiles",
+													"file_name": {
+														"value": "@item.name",
 														"type": "Expression"
-													},
-													"file_name": "Fact_Sales_1.csv"
+													}
 												}
 											}
 										],
