@@ -15,6 +15,13 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
+					"dataset": {
+						"referenceName": "ds_param_folder",
+						"type": "DatasetReference",
+						"parameters": {
+							"folder_name": "csvfiles"
+						}
+					},
 					"fieldList": [
 						"childItems"
 					],
@@ -155,7 +162,26 @@
 													"type": "DelimitedTextReadSettings"
 												}
 											},
-											"enableStaging": false
+											"sink": {
+												"type": "DelimitedTextSink",
+												"storeSettings": {
+													"type": "AzureBlobFSWriteSettings"
+												},
+												"formatSettings": {
+													"type": "DelimitedTextWriteSettings",
+													"quoteAllText": true,
+													"fileExtension": ".txt"
+												}
+											},
+											"enableStaging": false,
+											"translator": {
+												"type": "TabularTranslator",
+												"typeConversion": true,
+												"typeConversionSettings": {
+													"allowDataTruncation": true,
+													"treatBooleanAsNumber": false
+												}
+											}
 										},
 										"inputs": [
 											{
@@ -164,6 +190,20 @@
 												"parameters": {
 													"folder_name": {
 														"value": "@activity('Get Metadata1').output",
+														"type": "Expression"
+													},
+													"file_name": "Fact_Sales_1.csv"
+												}
+											}
+										],
+										"outputs": [
+											{
+												"referenceName": "dynamincfolder_file_source",
+												"type": "DatasetReference",
+												"parameters": {
+													"folder_name": "csvfiles",
+													"file_name": {
+														"value": "@item.name",
 														"type": "Expression"
 													}
 												}
