@@ -5,19 +5,11 @@
 		"typeProperties": {
 			"sources": [
 				{
-					"dataset": {
-						"referenceName": "DTAFLOW_SOURCE",
-						"type": "DatasetReference"
-					},
 					"name": "sourceCSV"
 				}
 			],
 			"sinks": [
 				{
-					"dataset": {
-						"referenceName": "dataflow_sink",
-						"type": "DatasetReference"
-					},
 					"name": "datasink"
 				}
 			],
@@ -55,8 +47,7 @@
 				"          price as double",
 				"     ),",
 				"     allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> sourceCSV",
+				"     validateSchema: false) ~> sourceCSV",
 				"sourceCSV select(mapColumn(",
 				"          transaction_id,",
 				"          transactional_date,",
@@ -77,11 +68,10 @@
 				"aggregate alterRow(upsertIf('ash'=='ash')) ~> alterRow1",
 				"alterRow1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     umask: 0022,",
-				"     preCommands: [],",
-				"     postCommands: [],",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> datasink"
+				"     skipDuplicateMapOutputs: true,",
+				"     preCommands: [],",
+				"     postCommands: []) ~> datasink"
 			]
 		}
 	}
